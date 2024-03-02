@@ -319,9 +319,27 @@ public:
         this->nameCol = new Image<string>();
         this->data = new Image<List<int>*>();
         //TODO: implement Task 2
+         for (int i=0; i<other.data->length(); i++){
+                this->data->push_back(other.data->get(i));
+                    
+        }
+
     }
     Dataset& operator=(const Dataset& other)
     {
+        if(this!=&other){
+            delete data;
+            delete nameCol;
+        }
+        if(other.nameCol){
+            this->nameCol = new Image<string>();
+            this->data = new Image<List<int>*>();
+            this->nameCol = other.nameCol;
+            for (int i=0; i<other.data->length(); i++){
+                this->data->push_back(other.data->get(i));
+                    
+            }
+        }
         //TODO: implement Task 2
         return *this;
     }
@@ -361,17 +379,33 @@ public:
     void getShape(int& nRows, int& nCols) const
     {
         //TODO: implement Task 2
+       nRows=data->length();
+       nCols=nameCol->length();
+
     }
     void columns() const
     {
+        
+        if (data == nullptr ) {
+            return;
+        }
+        for (int i = 0; i < nameCol->length(); ++i) {
+            cout << nameCol->get(i) << " ";
+        }
+    
         //TODO: implement Task 2
     }
     void printHead(int nRows = 5, int nCols = 5) const
-    {
-        if(nRows <= 0 || nCols <= 0) return;
-        //TODO: implement Task 2
+{
+    if(nRows <= 0 || nCols <= 0 || data == nullptr) return;
+    int totalRows = data->length();
+    nRows = min(nRows, totalRows);
 
+    for (int i = 0; i < nRows; ++i) {
+        List<int>* row = data->get(i);
+        printStartToEnd(0, min(nCols, row->length()));
     }
+}
     void printTail(int nRows = 5, int nCols = 5) const
     {
         if(nRows <= 0 || nCols <= 0)  return;
